@@ -66,7 +66,7 @@ class Hangman
                 print_teaser guess
                 #aqui ele compara a palavra do jogo com tudo que foi digitado até o momento e 
                 #se a palavra estiver completa, venceu o jogo
-                #só acho que esse split com join seria a melhor solução, mas fazer funcionar primeiro e depois otimizar
+                #só acho que esse split com join não seria a melhor solução, mas fazer funcionar primeiro e depois otimizar
                 if @word.first == @word_teaser.split.join
                     puts "Congratulations"
                 else
