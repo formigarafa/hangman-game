@@ -3,25 +3,25 @@ class Hangman
     #construct
     def initialize
         #randomiza o array e seleciona uma word
-        @word = words.sample
+        @challenge = challenges.sample
         @lives = 7
         #variável que põe na tela o "_" ou a última letra digitada pelo guess
         @word_teaser = ""
 
         #Pega o tamanho da palavra devolvida por words.sample e repete "_ " no tamanho certo de palavras
-        @word.first.size.times do
+        @challenge[:word].size.times do
             @word_teaser += "_ "
         end
     end
 
     #contém as palavras do jogo
-    def words
+    def challenges
         [
-            ["cricket", "A game play by gentlemen"],
-            ["jogging", "We are not walking..."],
-            ["celebrate", "Remembering special moments"],
-            ["continent", "There are 7 of these"],
-            ["exotic", "Not from around here.."]
+            {word: "cricket", clue: "A game play by gentlemen"},
+            {word: "jogging", clue: "We are not walking..."},
+            {word: "celebrate", clue: "Remembering special moments"},
+            {word: "continent", clue: "There are 7 of these"},
+            {word: "exotic", clue: "Not from around here.."}
         ]
     end
 
@@ -39,7 +39,7 @@ class Hangman
         #faz um loop no array e associa um index a cada letra
         new_teaser.each_with_index do |letter, index|
             #se letter for um underline e a letra digitada pelo guess for igual de word
-            if letter == '_' && @word.first[index] == last_guess
+            if letter == '_' && @challenge[:word][index] == last_guess
                 #na posição do underline entra a leta digitada pelo guess
                 new_teaser[index] = last_guess
             end
@@ -55,7 +55,7 @@ class Hangman
             puts "Enter a letter:"
             guess = gets.chomp
             #verifica se a palavra contém a letra digitada e retorna true
-            good_guess = @word.first.include? guess
+            good_guess = @challenge[:word].include? guess
             #pode digitar 'exit' pra sair do jogo
             if guess == 'exit'
                 puts "Thank you for playing"
@@ -67,7 +67,7 @@ class Hangman
                 #aqui ele compara a palavra do jogo com tudo que foi digitado até o momento e 
                 #se a palavra estiver completa, venceu o jogo
                 #só acho que esse split com join não seria a melhor solução, mas fazer funcionar primeiro e depois otimizar
-                if @word.first == @word_teaser.split.join
+                if @challenge[:word] == @word_teaser.split(" ").join
                     puts "Congratulations"
                 else
                     #continua o jogo e não perde vida
@@ -87,10 +87,10 @@ class Hangman
 
     #inicio do jogo
     def begin
-        puts "New game started... your word is #{@word.first.size} characters long"
+        puts "New game started... your word is #{@challenge[:word].size} characters long"
         puts "To exit game at any time type 'exit'"
         print_teaser
-        puts "Clue: #{@word.last}" #imprime a dica da palavra
+        puts "Clue: #{@challenge[:clue]}" #imprime a dica da palavra
         make_guess
         
     end
